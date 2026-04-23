@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DoseGuard 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg: #0a0e1a;
+  --bg2: #0f1525;
+  --bg3: #151c30;
+  --card: #111827;
+  --border: #1e2d45;
+  --accent: #00d4ff;
+  --accent2: #7c3aed;
+  --green: #10b981;
+  --red: #ef4444;
+  --amber: #f59e0b;
+  --text: #e2e8f0;
+  --muted: #64748b;
+  --mono: 'Space Mono', monospace;
+  --sans: 'DM Sans', sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* BACKGROUND GRID */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.wrap { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding: 0 1.5rem 3rem; }
+
+/* HEADER */
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem 0 2rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-icon {
+  width: 44px; height: 44px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px;
+}
+
+.logo-text h1 {
+  font-family: var(--mono);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.5px;
+}
+
+.logo-text p {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 1px;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.live-pill {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(16,185,129,0.1);
+  border: 1px solid rgba(16,185,129,0.3);
+  border-radius: 999px;
+  padding: 5px 14px;
+  font-size: 12px;
+  color: var(--green);
+  font-family: var(--mono);
+}
+
+.live-dot {
+  width: 7px; height: 7px;
+  background: var(--green);
+  border-radius: 50%;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.8); }
+}
+
+.clock {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--accent);
+  background: rgba(0,212,255,0.05);
+  border: 1px solid rgba(0,212,255,0.15);
+  padding: 5px 14px;
+  border-radius: 8px;
+}
+
+/* SUMMARY CARDS */
+.summary {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 2rem;
+}
+
+@media(max-width: 700px) { .summary { grid-template-columns: repeat(2,1fr); } }
+
+.stat-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1.25rem;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.3s;
+}
+
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent-color, var(--accent)), transparent);
+}
+
+.stat-card:hover { border-color: rgba(0,212,255,0.3); }
+
+.stat-label {
+  font-size: 11px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 8px;
+  font-family: var(--mono);
+}
+
+.stat-val {
+  font-size: 28px;
+  font-weight: 600;
+  font-family: var(--mono);
+  color: var(--val-color, var(--text));
+}
+
+.stat-sub {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+/* SYSTEM STATUS BAR */
+.status-bar {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 0.75rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.status-bar-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--muted);
+  font-family: var(--mono);
+}
+
+.status-icon { font-size: 16px; }
+#systemMsg { color: var(--text); }
+
+.last-sync {
+  font-size: 11px;
+  color: var(--muted);
+  font-family: var(--mono);
+}
+
+/* BOXES GRID */
+.boxes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.25rem;
+}
+
+/* BOX CARD */
+.box-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: transform 0.2s, border-color 0.3s;
+  animation: fadeUp 0.5s ease both;
+}
+
+.box-card:hover { transform: translateY(-2px); border-color: rgba(0,212,255,0.2); }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.box-card:nth-child(2) { animation-delay: 0.1s; }
+.box-card:nth-child(3) { animation-delay: 0.2s; }
+
+.box-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem 0.75rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.box-name {
+  font-family: var(--mono);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.box-num {
+  width: 28px; height: 28px;
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.badge {
+  font-size: 10px;
+  font-weight: 700;
+  font-family: var(--mono);
+  padding: 3px 10px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.badge-active  { background: rgba(16,185,129,0.15); color: #10b981; border: 1px solid rgba(16,185,129,0.3); }
+.badge-locked  { background: rgba(239,68,68,0.15);  color: #ef4444; border: 1px solid rgba(239,68,68,0.3); }
+.badge-low     { background: rgba(245,158,11,0.15); color: #f59e0b; border: 1px solid rgba(245,158,11,0.3); }
+.badge-alert   { background: rgba(0,212,255,0.15);  color: #00d4ff; border: 1px solid rgba(0,212,255,0.3); animation: blink 1s step-end infinite; }
+.badge-empty   { background: rgba(239,68,68,0.1);   color: #ef4444; border: 1px solid rgba(239,68,68,0.2); }
+
+@keyframes blink { 50% { opacity: 0.3; } }
+
+.box-body { padding: 1rem 1.25rem; }
+
+/* STATS ROW */
+.box-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 1rem;
+}
+
+.bstat {
+  background: var(--bg3);
+  border-radius: 10px;
+  padding: 10px;
+  border: 1px solid var(--border);
+}
+
+.bstat-label { font-size: 10px; color: var(--muted); font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 5px; }
+.bstat-val   { font-size: 16px; font-weight: 600; font-family: var(--mono); }
+
+/* PROGRESS */
+.progress-wrap { margin-bottom: 1rem; }
+.progress-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  color: var(--muted);
+  font-family: var(--mono);
+  margin-bottom: 5px;
+}
+.progress-track {
+  height: 4px;
+  background: var(--bg3);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.8s cubic-bezier(0.4,0,0.2,1);
+}
+
+/* DOSE TIME */
+.dose-time-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 8px 12px;
+  margin-bottom: 1rem;
+  font-size: 12px;
+}
+
+.dose-time-label { color: var(--muted); font-family: var(--mono); }
+.dose-time-val   { color: var(--accent); font-family: var(--mono); font-weight: 700; }
+
+/* HISTORY */
+.history-title {
+  font-size: 10px;
+  color: var(--muted);
+  font-family: var(--mono);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 8px;
+}
+
+.history-list { display: flex; flex-direction: column; gap: 4px; }
+
+.history-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: var(--bg3);
+  font-size: 12px;
+  font-family: var(--mono);
+}
+
+.ev-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.ev-TAKEN  .ev-dot { background: var(--green); }
+.ev-MISSED .ev-dot { background: var(--red); }
+.ev-FILLED .ev-dot { background: var(--accent); }
+.ev-ALERT  .ev-dot { background: var(--amber); }
+
+.ev-label { flex: 1; }
+.ev-TAKEN  .ev-label { color: var(--green); }
+.ev-MISSED .ev-label { color: var(--red); }
+.ev-FILLED .ev-label { color: var(--accent); }
+.ev-ALERT  .ev-label { color: var(--amber); }
+
+.ev-time { color: var(--muted); font-size: 11px; }
+
+.no-history { font-size: 12px; color: var(--muted); font-family: var(--mono); text-align: center; padding: 12px; }
+
+/* ALERT OVERLAY ON CARD */
+.box-card.alerting {
+  border-color: rgba(0,212,255,0.5);
+  box-shadow: 0 0 0 1px rgba(0,212,255,0.2), 0 0 30px rgba(0,212,255,0.08);
+}
+
+/* FOOTER */
+footer {
+  margin-top: 3rem;
+  border-top: 1px solid var(--border);
+  padding-top: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.footer-left  { font-size: 12px; color: var(--muted); font-family: var(--mono); }
+.footer-right { font-size: 12px; color: var(--muted); font-family: var(--mono); }
+#lastMsgFooter { color: var(--accent); }
+
+/* CONNECTING STATE */
+.connecting {
+  text-align: center;
+  padding: 4rem 0;
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 14px;
+}
+
+.connecting::before {
+  content: '';
+  display: block;
+  width: 40px; height: 40px;
+  border: 2px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  margin: 0 auto 1rem;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* TOAST */
+.toast {
+  position: fixed;
+  bottom: 1.5rem; right: 1.5rem;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--text);
+  z-index: 999;
+  max-width: 300px;
+  transform: translateY(80px);
+  opacity: 0;
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+
+.toast.show { transform: translateY(0); opacity: 1; }
+.toast-icon { font-size: 16px; margin-right: 8px; }
+
+@media(max-width: 500px) {
+  .boxes { grid-template-columns: 1fr; }
+  .summary { grid-template-columns: repeat(2,1fr); }
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo">
+      <div class="logo-icon">💊</div>
+      <div class="logo-text">
+        <h1>DOSEGUARD</h1>
+        <p>Real-time medicine monitor</p>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="live-pill">
+        <span class="live-dot"></span>
+        <span id="connStatus">CONNECTING</span>
+      </div>
+      <div class="clock" id="clockEl">--:--:--</div>
+    </div>
+  </header>
+
+  <!-- SUMMARY -->
+  <div class="summary">
+    <div class="stat-card" style="--accent-color:#00d4ff">
+      <div class="stat-label">Total Boxes</div>
+      <div class="stat-val" style="--val-color:#00d4ff">3</div>
+      <div class="stat-sub">ESP32 managed</div>
+    </div>
+    <div class="stat-card" style="--accent-color:#10b981">
+      <div class="stat-label">Taken Today</div>
+      <div class="stat-val" id="s-taken" style="--val-color:#10b981">—</div>
+      <div class="stat-sub">doses confirmed</div>
+    </div>
+    <div class="stat-card" style="--accent-color:#ef4444">
+      <div class="stat-label">Missed Today</div>
+      <div class="stat-val" id="s-missed" style="--val-color:#ef4444">—</div>
+      <div class="stat-sub">grace period expired</div>
+    </div>
+    <div class="stat-card" style="--accent-color:#7c3aed">
+      <div class="stat-label">Last Sync</div>
+      <div class="stat-val" id="s-sync" style="font-size:16px;padding-top:6px;--val-color:#a78bfa">—</div>
+      <div class="stat-sub">Firebase updated</div>
+    </div>
+  </div>
+
+  <!-- STATUS BAR -->
+  <div class="status-bar">
+    <div class="status-bar-left">
+      <span class="status-icon" id="sysIcon">📡</span>
+      <span id="systemMsg">Waiting for ESP32...</span>
+    </div>
+    <span class="last-sync" id="lastSyncFull">—</span>
+  </div>
+
+  <!-- BOXES -->
+  <div class="boxes" id="boxesContainer">
+    <div class="connecting">Connecting to Firebase...</div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-left">DoseGuard 2026 · ESP32 + Firebase</div>
+    <div class="footer-right">Last msg: <span id="lastMsgFooter">—</span></div>
+  </footer>
+
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <span class="toast-icon" id="toastIcon">💊</span>
+  <span id="toastMsg">—</span>
+</div>
+
+<!-- FIREBASE -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+<script>
+// ===================== FIREBASE CONFIG =====================
+// PASTE YOUR FIREBASE CONFIG HERE
+const firebaseConfig = {
+  apiKey: "8583632397:AAFuluDD6kE4hFPFNwoRpzL4yDkSrzbQkKo",
+  authDomain: "doseguard-2026.firebaseapp.com",
+  databaseURL: "https://doseguard-2026-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "doseguard-2026",
+  storageBucket: "doseguard-2026.firebasestorage.app",
+  messagingSenderId: "164672873509",
+  appId: "1:164672873509:web:504827f2311dc5d940cbcc"
+};
+// ===========================================================
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+const MAX_STOCK = 30;
+
+// Color per box
+const BOX_COLORS = ['#00d4ff', '#7c3aed', '#10b981'];
+const BOX_BG     = ['rgba(0,212,255,0.15)', 'rgba(124,58,237,0.15)', 'rgba(16,185,129,0.15)'];
+
+// Live clock
+setInterval(() => {
+  document.getElementById('clockEl').textContent =
+    new Date().toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit', second:'2-digit' });
+}, 1000);
+
+// Toast helper
+let toastTimer;
+function showToast(icon, msg) {
+  const t = document.getElementById('toast');
+  document.getElementById('toastIcon').textContent = icon;
+  document.getElementById('toastMsg').textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 4000);
+}
+
+// Format ISO time
+function fmtTime(iso) {
+  if (!iso) return '—';
+  try {
+    return new Date(iso).toLocaleString('en-IN', {
+      hour: '2-digit', minute: '2-digit',
+      month: 'short', day: 'numeric'
+    });
+  } catch(e) { return iso; }
+}
+
+function fmtTimeShort(iso) {
+  if (!iso) return '—';
+  try {
+    return new Date(iso).toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit' });
+  } catch(e) { return iso; }
+}
+
+// Build box card HTML
+function buildBoxCard(i, box) {
+  const stock      = (box.stock !== undefined && box.stock !== null) ? box.stock : null;
+  const locked     = box.locked ?? true;
+  const lowStock   = box.lowStock ?? false;
+  const doseAlert  = box.doseAlert ?? false;
+  const doseHour   = box.doseHour ?? 8;
+  const doseMin    = box.doseMin  ?? 0;
+  const lastEvent  = box.lastEvent || {};
+  const expiry     = box.expiry || '';
+  const history    = box.history ? Object.values(box.history).reverse().slice(0, 5) : [];
+
+  const pct = stock !== null ? Math.min(100, Math.round(stock / MAX_STOCK * 100)) : 0;
+  const barColor = pct > 40 ? '#10b981' : pct > 15 ? '#f59e0b' : '#ef4444';
+
+  // Badge
+  let badge = '';
+  let alerting = false;
+  if (doseAlert && !locked) {
+    badge = '<span class="badge badge-alert">⚡ DOSE ALERT</span>';
+    alerting = true;
+  } else if (locked && stock === 0) {
+    badge = '<span class="badge badge-empty">EMPTY</span>';
+  } else if (locked) {
+    badge = '<span class="badge badge-locked">LOCKED</span>';
+  } else if (lowStock) {
+    badge = '<span class="badge badge-low">LOW STOCK</span>';
+  } else {
+    badge = '<span class="badge badge-active">ACTIVE</span>';
+  }
+
+  // Stock display
+  const stockDisplay = stock !== null ? stock : '—';
+  const stockColor   = stock === 0 ? '#ef4444' : stock <= 2 ? '#f59e0b' : BOX_COLORS[i];
+
+  // Dose time
+  const doseTimeStr = String(doseHour).padStart(2,'0') + ':' + String(doseMin).padStart(2,'0');
+
+  // History
+  const histHTML = history.length > 0 ? history.map(h => {
+    const evClass = h.event || 'TAKEN';
+    const icons = { TAKEN:'✓', MISSED:'✗', FILLED:'↑', ALERT:'!' };
+    return `<div class="history-item ev-${evClass}">
+      <span class="ev-dot"></span>
+      <span class="ev-label">${icons[evClass] || '•'} ${h.event || '—'}</span>
+      <span class="ev-time">${fmtTime(h.time)}</span>
+    </div>`;
+  }).join('') : '<div class="no-history">No history yet</div>';
+
+  return `
+  <div class="box-card ${alerting ? 'alerting' : ''}" id="card-box${i}">
+    <div class="box-header">
+      <div class="box-name">
+        <div class="box-num" style="background:${BOX_BG[i]};color:${BOX_COLORS[i]}">${i+1}</div>
+        BOX ${i+1}
+      </div>
+      ${badge}
+    </div>
+    <div class="box-body">
+      <div class="box-stats">
+        <div class="bstat">
+          <div class="bstat-label">Stock</div>
+          <div class="bstat-val" style="color:${stockColor}">${stockDisplay}</div>
+        </div>
+        <div class="bstat">
+          <div class="bstat-label">Status</div>
+          <div class="bstat-val" style="color:${locked ? '#ef4444' : '#10b981'};font-size:13px">${locked ? 'LOCKED' : 'OPEN'}</div>
+        </div>
+        <div class="bstat">
+          <div class="bstat-label">Last event</div>
+          <div class="bstat-val" style="font-size:12px;color:var(--muted)">${lastEvent.type || '—'}</div>
+        </div>
+      </div>
+
+      <div class="progress-wrap">
+        <div class="progress-label">
+          <span>Stock level</span>
+          <span style="color:${barColor}">${pct}%</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" style="width:${pct}%;background:${barColor}"></div>
+        </div>
+      </div>
+
+      <div class="dose-time-row">
+        <span class="dose-time-label">⏰ Next dose</span>
+        <span class="dose-time-val">${doseTimeStr}</span>
+      </div>
+
+      ${expiry ? `<div class="dose-time-row" style="margin-bottom:1rem">
+        <span class="dose-time-label">📅 Expiry</span>
+        <span class="dose-time-val" style="color:var(--amber)">${expiry}</span>
+      </div>` : ''}
+
+      <div class="history-title">Recent activity</div>
+      <div class="history-list">${histHTML}</div>
+    </div>
+  </div>`;
+}
+
+// Main Firebase listener
+let takenCount = 0, missedCount = 0;
+
+db.ref('boxes').on('value', snap => {
+  const data = snap.val() || {};
+  const container = document.getElementById('boxesContainer');
+  takenCount = 0; missedCount = 0;
+
+  let html = '';
+  for (let i = 0; i < 3; i++) {
+    const box = data[`box${i}`] || {};
+    html += buildBoxCard(i, box);
+
+    // Count today
+    const hist = box.history ? Object.values(box.history) : [];
+    const today = new Date().toDateString();
+    hist.forEach(h => {
+      const hd = h.time ? new Date(h.time).toDateString() : '';
+      if (hd === today) {
+        if (h.event === 'TAKEN')  takenCount++;
+        if (h.event === 'MISSED') missedCount++;
+      }
+    });
+  }
+
+  container.innerHTML = html;
+  document.getElementById('s-taken').textContent  = takenCount;
+  document.getElementById('s-missed').textContent = missedCount;
+  document.getElementById('connStatus').textContent = 'LIVE';
+}, err => {
+  document.getElementById('connStatus').textContent = 'ERROR';
+  document.getElementById('boxesContainer').innerHTML =
+    '<div class="connecting" style="color:#ef4444">Firebase error: ' + err.message + '</div>';
+});
+
+// System status
+db.ref('systemStatus').on('value', snap => {
+  const d = snap.val();
+  if (d && d.online) {
+    document.getElementById('sysIcon').textContent = '🟢';
+    document.getElementById('systemMsg').textContent = 'ESP32 Online · ' + fmtTime(d.time);
+  }
+});
+
+// Last sync
+db.ref('lastSync').on('value', snap => {
+  const t = snap.val();
+  if (t) {
+    const short = fmtTimeShort(t);
+    const full  = fmtTime(t);
+    document.getElementById('s-sync').textContent     = short;
+    document.getElementById('lastSyncFull').textContent = 'Synced: ' + full;
+  }
+});
+
+// Last message + toast
+let lastSeenMsg = '';
+db.ref('lastMessage').on('value', snap => {
+  const d = snap.val();
+  if (!d) return;
+  document.getElementById('lastMsgFooter').textContent = '"' + d.text + '" @ ' + fmtTimeShort(d.time);
+
+  if (d.text !== lastSeenMsg) {
+    lastSeenMsg = d.text;
+    if (d.text.includes('TAKEN'))         showToast('✅', d.text);
+    else if (d.text.includes('MISSED'))   showToast('❌', d.text);
+    else if (d.text.includes('TAKE MED')) showToast('💊', d.text);
+    else if (d.text.includes('LOW'))      showToast('⚠️', d.text);
+    else if (d.text.includes('EXPIRED'))  showToast('🔒', d.text);
+    else if (d.text === 'SYSTEM ONLINE')  showToast('🟢', 'ESP32 is online!');
+  }
+});
+</script>
+</body>
+</html>

@@ -57,7 +57,7 @@ header{display:flex;align-items:center;justify-content:space-between;
 
 /* SUMMARY */
 .summary{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1.5rem;}
-@media(max-width:768px){.summary{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:650px){.summary{grid-template-columns:repeat(2,1fr);}}
 .sc{background:var(--card);border:1px solid var(--border);border-radius:13px;
   padding:1.1rem 1rem;position:relative;overflow:hidden;}
 .sc::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--tc,var(--accent));}
@@ -76,91 +76,37 @@ header{display:flex;align-items:center;justify-content:space-between;
 /* BOXES */
 .boxes{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:1.2rem;}
 
-/* ═══════════════════════════════════════════
-   MOBILE RESPONSIVE — full phone optimisation
-   ═══════════════════════════════════════════ */
+/* ═══════════════ MOBILE ═══════════════ */
 @media(max-width:600px){
-
-  /* wrap */
   .wrap{padding:0 .75rem 5rem;}
-
-  /* header */
-  header{padding:1rem 0 1.25rem;margin-bottom:1rem;gap:.6rem;}
-  .logo-icon{width:38px;height:38px;font-size:18px;border-radius:10px;}
-  .logo h1{font-size:14px;}
-  .logo p{font-size:11px;}
-  .hdr-r{gap:7px;}
+  header{padding:1rem 0 1.25rem;margin-bottom:1rem;}
+  .logo-icon{width:38px;height:38px;font-size:18px;}
+  .logo h1{font-size:14px;} .logo p{font-size:11px;}
   .live-pill{padding:4px 10px;font-size:11px;}
-  .ldot{width:6px;height:6px;}
   .clock-p{font-size:11px;padding:4px 10px;}
-
-  /* RTC banner — stack vertically */
   .rtc-banner{flex-direction:column;align-items:flex-start;gap:6px;padding:.7rem .9rem;}
-  .rtc-val{font-size:26px;}
-  .rtc-date{font-size:11px;}
-  .rtc-right{font-size:10px;}
-  .rtc-tag{font-size:9px;}
-
-  /* summary — 2x2 grid */
+  .rtc-val{font-size:26px;} .rtc-date{font-size:11px;}
   .summary{grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:1rem;}
-  .sc{padding:.85rem .75rem;}
-  .sc-lbl{font-size:9px;margin-bottom:5px;}
-  .sc-val{font-size:22px;}
-  .sc-sub{font-size:10px;}
-
-  /* sysbar */
+  .sc{padding:.85rem .75rem;} .sc-lbl{font-size:9px;} .sc-val{font-size:22px;}
   .sysbar{padding:.6rem .9rem;margin-bottom:1.25rem;}
-  .sysbar-l{font-size:12px;gap:7px;}
-  .sysbar-r{font-size:10px;}
-
-  /* boxes — single column */
+  .sysbar-l{font-size:12px;} .sysbar-r{font-size:10px;}
   .boxes{grid-template-columns:1fr;gap:.9rem;}
-
-  /* card header */
   .card-hdr{padding:.75rem .9rem .65rem;}
-  .card-title{font-size:13px;gap:7px;}
-  .box-num{width:26px;height:26px;font-size:12px;}
+  .card-title{font-size:13px;} .box-num{width:26px;height:26px;font-size:12px;}
   .badge{font-size:9px;padding:3px 8px;}
-
-  /* card body */
   .card-body{padding:.75rem .9rem;}
-
-  /* 3-col stats */
   .bstats{gap:6px;margin-bottom:.75rem;}
-  .bs{padding:8px 8px;}
-  .bs-lbl{font-size:9px;margin-bottom:4px;}
-  .bs-val{font-size:14px;}
-
-  /* dose block */
+  .bs{padding:8px;} .bs-lbl{font-size:9px;} .bs-val{font-size:14px;}
   .dose-block{padding:9px 10px;margin-bottom:.75rem;}
-  .dose-block-left .dl{font-size:9px;}
-  .dose-block-left .dv{font-size:20px;}
+  .dose-block-left .dl{font-size:9px;} .dose-block-left .dv{font-size:20px;}
   .dose-updated{font-size:9px;}
-
-  /* progress */
-  .prog{margin-bottom:.75rem;}
-  .prog-meta{font-size:9px;}
-  .prog-track{height:5px;}
-
-  /* info rows */
+  .prog{margin-bottom:.75rem;} .prog-meta{font-size:9px;} .prog-track{height:5px;}
   .irow{padding:6px 9px;font-size:11px;margin-bottom:6px;}
-  .ir-lbl{font-size:10px;}
-  .ir-val{font-size:11px;}
-
-  /* history */
-  .hist-hdr{font-size:9px;margin-bottom:6px;}
-  .hi{padding:5px 8px;font-size:11px;gap:7px;}
-  .hdot{width:5px;height:5px;}
-  .htm{font-size:10px;}
-  .no-hist{font-size:11px;padding:8px;}
-
-  /* footer */
-  footer{flex-direction:column;gap:4px;padding-top:1rem;margin-top:1.5rem;}
+  .hist-hdr{font-size:9px;} .hi{padding:5px 8px;font-size:11px;gap:7px;}
+  .hdot{width:5px;height:5px;} .htm{font-size:10px;}
+  footer{flex-direction:column;gap:4px;padding-top:1rem;margin-top:1.5rem;margin-bottom:5rem;}
   .foot{font-size:10px;}
-
-  /* toast — full width bottom */
-  .toast{left:.75rem;right:.75rem;max-width:100%;
-    bottom:1rem;font-size:12px;padding:.75rem 1rem;border-radius:10px;}
+  .toast{left:.75rem;right:.75rem;max-width:100%;bottom:5rem;font-size:12px;padding:.75rem 1rem;}
 }
 
 /* BOX CARD */
@@ -239,6 +185,8 @@ header{display:flex;align-items:center;justify-content:space-between;
 .hi.ev-EXPIRED .hdot{background:#ef4444;}.hi.ev-EXPIRED .hlbl{color:#fca5a5;}
 .hi.ev-EMPTY   .hdot{background:#ef4444;}.hi.ev-EMPTY   .hlbl{color:#f87171;}
 .hi.ev-DOSE_SET .hdot{background:#7c3aed;}.hi.ev-DOSE_SET .hlbl{color:#a78bfa;}
+.hi.ev-BOOT    .hdot{background:#00d4ff;}.hi.ev-BOOT    .hlbl{color:#67e8f9;}
+.hi.ev-OFFLINE .hdot{background:#94a3b8;}.hi.ev-OFFLINE .hlbl{color:#94a3b8;}
 .no-hist{font-size:12px;color:var(--muted);text-align:center;padding:10px;font-family:var(--mono);}
 
 /* FOOTER */
@@ -275,8 +223,8 @@ footer{margin-top:2.5rem;border-top:1px solid var(--border);padding-top:1.25rem;
     <div class="logo">
       <div class="logo-icon">💊</div>
       <div>
-        <h1>DOSEGUARD +</h1>
-        <p>Real Time Monitoring & Alert System </p>
+        <h1>DOSEGUARD 2026</h1>
+        <p>ESP32 · Firebase · Real-time</p>
       </div>
     </div>
     <div class="hdr-r">
@@ -342,8 +290,7 @@ footer{margin-top:2.5rem;border-top:1px solid var(--border);padding-top:1.25rem;
   </div>
 
   <footer>
-    <div class="foot">DoseGuard+ Since2026 · Developed by Paramasivam.M Harishmanikandan.M Aswin Immanual J.L </div>
-    
+    <div class="foot">DoseGuard 2026 · ESP32 + Firebase Realtime DB</div>
     <div class="foot">Last: <span id="footMsg">—</span></div>
   </footer>
 </div>
@@ -351,81 +298,6 @@ footer{margin-top:2.5rem;border-top:1px solid var(--border);padding-top:1.25rem;
 <div class="toast" id="toast">
   <span id="tIco">💊</span><span id="tTxt">—</span>
 </div>
-
-<!-- MOBILE BOTTOM NAV -->
-<nav class="mob-nav" id="mobNav">
-  <button class="mob-btn active" onclick="mobScroll('top')" id="mBtn0">
-    <span>🏠</span><span>Home</span>
-  </button>
-  <button class="mob-btn" onclick="mobScroll('box0')" id="mBtn1">
-    <span style="color:#00d4ff">①</span><span>Box 1</span>
-  </button>
-  <button class="mob-btn" onclick="mobScroll('box1')" id="mBtn2">
-    <span style="color:#7c3aed">②</span><span>Box 2</span>
-  </button>
-  <button class="mob-btn" onclick="mobScroll('box2')" id="mBtn3">
-    <span style="color:#10b981">③</span><span>Box 3</span>
-  </button>
-  <button class="mob-btn" onclick="mobScroll('rtc')" id="mBtn4">
-    <span>🕐</span><span>Time</span>
-  </button>
-</nav>
-
-<style>
-.mob-nav{
-  display:none;
-  position:fixed;bottom:0;left:0;right:0;z-index:998;
-  background:var(--card);border-top:1px solid var(--border);
-  padding:.5rem .25rem calc(.5rem + env(safe-area-inset-bottom));
-}
-.mob-btn{
-  flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;
-  background:none;border:none;color:var(--muted);font-family:var(--mono);
-  font-size:9px;padding:.35rem .2rem;cursor:pointer;
-  transition:color .2s;border-radius:8px;
-}
-.mob-btn span:first-child{font-size:18px;line-height:1;}
-.mob-btn.active{color:var(--accent);}
-@media(max-width:600px){
-  .mob-nav{display:flex;}
-  footer{margin-bottom:5rem;}
-  .toast{bottom:5rem;}
-}
-</style>
-
-<script>
-function mobScroll(target){
-  document.querySelectorAll('.mob-btn').forEach(b=>b.classList.remove('active'));
-  if(target==='top'){
-    window.scrollTo({top:0,behavior:'smooth'});
-    document.getElementById('mBtn0').classList.add('active');
-  } else if(target==='rtc'){
-    document.querySelector('.rtc-banner').scrollIntoView({behavior:'smooth',block:'start'});
-    document.getElementById('mBtn4').classList.add('active');
-  } else {
-    const idx=parseInt(target.replace('box',''));
-    const card=document.getElementById('card'+idx);
-    if(card) card.scrollIntoView({behavior:'smooth',block:'start'});
-    document.getElementById('mBtn'+(idx+1)).classList.add('active');
-  }
-}
-window.addEventListener('scroll',()=>{
-  if(window.innerWidth>600) return;
-  const scrollY=window.scrollY+150;
-  let active='top';
-  const rtc=document.querySelector('.rtc-banner');
-  if(rtc&&rtc.offsetTop<=scrollY) active='rtc';
-  for(let i=0;i<3;i++){
-    const c=document.getElementById('card'+i);
-    if(c&&c.offsetTop<=scrollY) active='box'+i;
-  }
-  document.querySelectorAll('.mob-btn').forEach(b=>b.classList.remove('active'));
-  if(active==='top') document.getElementById('mBtn0').classList.add('active');
-  else if(active==='rtc') document.getElementById('mBtn4').classList.add('active');
-  else document.getElementById('mBtn'+(parseInt(active.replace('box',''))+1)).classList.add('active');
-},{passive:true});
-<\/script>
-
 
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
@@ -529,11 +401,12 @@ function buildCard(i, box){
   else           {stTxt='OPEN';   stClr='#10b981';}
 
   // History
-  const ICO={TAKEN:'✓',MISSED:'✗',FILLED:'↑',ALERT:'!',EXPIRED:'🔒',EMPTY:'✗',DOSE_SET:'⏰'};
+  const ICO={TAKEN:'✓',MISSED:'✗',FILLED:'↑',ALERT:'!',EXPIRED:'🔒',EMPTY:'✗',DOSE_SET:'⏰',BOOT:'⚡',OFFLINE:'💤'};
   const histHTML=hist.length
     ?hist.map(h=>{const ev=h.event||'TAKEN';
+      const detail = (ev==='OFFLINE' && h.detail) ? ' · '+h.detail : '';
       return`<div class="hi ev-${ev}"><span class="hdot"></span>
-        <span class="hlbl">${ICO[ev]||'•'} ${ev}</span>
+        <span class="hlbl">${ICO[ev]||'•'} ${ev}${detail}</span>
         <span class="htm">${fmtFull(h.time)}</span></div>`;
     }).join('')
     :'<div class="no-hist">No history yet</div>';
@@ -688,6 +561,45 @@ db.ref('lastMessage').on('value',snap=>{
   else if(t==='TIME UPDATED')          toast('🕐','ESP32 RTC time updated!');
   else if(t==='SYSTEM ONLINE')         toast('🟢','ESP32 is online!');
 });
+</script>
+
+<!-- MOBILE BOTTOM NAV -->
+<nav id="mobNav" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:998;
+  background:var(--card);border-top:1px solid var(--border);
+  padding:.5rem .25rem calc(.5rem + env(safe-area-inset-bottom));">
+  <button class="mnb active" onclick="mScroll('top')" id="mb0"><span>🏠</span><span>Home</span></button>
+  <button class="mnb" onclick="mScroll(0)" id="mb1"><span style="color:#00d4ff">①</span><span>Box 1</span></button>
+  <button class="mnb" onclick="mScroll(1)" id="mb2"><span style="color:#7c3aed">②</span><span>Box 2</span></button>
+  <button class="mnb" onclick="mScroll(2)" id="mb3"><span style="color:#10b981">③</span><span>Box 3</span></button>
+  <button class="mnb" onclick="mScroll('rtc')" id="mb4"><span>🕐</span><span>Time</span></button>
+</nav>
+<style>
+.mnb{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;
+  background:none;border:none;color:var(--muted);font-family:var(--mono);
+  font-size:9px;padding:.35rem .1rem;cursor:pointer;transition:color .15s;}
+.mnb span:first-child{font-size:17px;line-height:1;}
+.mnb.active{color:var(--accent);}
+@media(max-width:600px){#mobNav{display:flex !important;}}
+</style>
+<script>
+function mScroll(t){
+  document.querySelectorAll('.mnb').forEach(b=>b.classList.remove('active'));
+  if(t==='top'){window.scrollTo({top:0,behavior:'smooth'});document.getElementById('mb0').classList.add('active');}
+  else if(t==='rtc'){document.querySelector('.rtc-banner').scrollIntoView({behavior:'smooth',block:'start'});document.getElementById('mb4').classList.add('active');}
+  else{const c=document.getElementById('card'+t);if(c)c.scrollIntoView({behavior:'smooth',block:'start'});document.getElementById('mb'+(t+1)).classList.add('active');}
+}
+window.addEventListener('scroll',()=>{
+  if(window.innerWidth>600)return;
+  const sy=window.scrollY+150;
+  let a='top';
+  const rtc=document.querySelector('.rtc-banner');
+  if(rtc&&rtc.offsetTop<=sy)a='rtc';
+  for(let i=0;i<3;i++){const c=document.getElementById('card'+i);if(c&&c.offsetTop<=sy)a=i;}
+  document.querySelectorAll('.mnb').forEach(b=>b.classList.remove('active'));
+  if(a==='top')document.getElementById('mb0').classList.add('active');
+  else if(a==='rtc')document.getElementById('mb4').classList.add('active');
+  else document.getElementById('mb'+(a+1)).classList.add('active');
+},{passive:true});
 </script>
 </body>
 </html>

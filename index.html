@@ -505,21 +505,47 @@ db.ref('boxes').on('value',snap=>{
     '<div class="conn" style="color:#ef4444">Firebase error: '+err.message+'</div>';
 });
 
-// RTC TIME — updates when /settime sent to Telegram
-db.ref('rtcTime').on('value',snap=>{
-  const d=snap.val();
-  if(!d)return;
-  if(d.time && d.time!==''){
-    document.getElementById('rtcTimeVal').textContent = d.time || '--:--:--';
+// RTC TIME — live ticking clock from last saved Firebase value
+let rtcTicker = null;
+
+db.ref('rtcTime').on('value', snap => {
+  const d = snap.val();
+  if (!d) return;
+
+  if (d.time && d.time !== '') {
     document.getElementById('rtcDateVal').textContent = d.date || '';
     document.getElementById('rtcUpdated').textContent =
-      d.updatedAt ? 'Updated: '+fmtFull(d.updatedAt) : '';
-    if(d.datetime && d.datetime!==''){
-      toast('🕐','RTC updated: '+d.datetime);
+      d.updatedAt ? 'Updated: ' + fmtFull(d.updatedAt) : '';
+
+    // Calculate elapsed seconds since /settime was saved
+    const updatedAt = d.updatedAt ? new Date(d.updatedAt) : new Date();
+    const parts = d.time.split(':').map(Number);
+    let baseSec = (parts[0] || 0) * 3600 + (parts[1] || 0) * 60 + (parts[2] || 0);
+    const elapsed = Math.floor((Date.now() - updatedAt.getTime()) / 1000);
+    baseSec += Math.max(0, elapsed);
+
+    // Clear any previous ticker
+    if (rtcTicker) clearInterval(rtcTicker);
+
+    // Tick every second
+    rtcTicker = setInterval(() => {
+      baseSec++;
+      const h = Math.floor(baseSec / 3600) % 24;
+      const m = Math.floor(baseSec / 60) % 60;
+      const s = baseSec % 60;
+      document.getElementById('rtcTimeVal').textContent =
+        String(h).padStart(2, '0') + ':' +
+        String(m).padStart(2, '0') + ':' +
+        String(s).padStart(2, '0');
+    }, 1000);
+
+    if (d.datetime && d.datetime !== '') {
+      toast('🕐', 'RTC updated: ' + d.datetime);
     }
   } else {
-    document.getElementById('rtcTimeVal').textContent='Not set';
-    document.getElementById('rtcDateVal').textContent='Send /settime YYYY-MM-DD HH:MM:SS';
+    if (rtcTicker) clearInterval(rtcTicker);
+    document.getElementById('rtcTimeVal').textContent = 'Not set';
+    document.getElementById('rtcDateVal').textContent = 'Send /settime YYYY-MM-DD HH:MM:SS';
   }
 });
 
